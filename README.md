@@ -6,7 +6,7 @@ AWS backend (Lambda + DynamoDB), and a Python simulator that generates the signa
 
 ## Architecture
 
-![ReLy Week 12 Architecture](docs/architecture-diagram.svg)
+![ReLy Week 12 Architecture](docs/architecture-diagramv2.png)
 
 The system has three client types (mobile app, admin operator, Python simulator) talking
 to a single public entry point — a **Lambda Function URL** — which invokes the

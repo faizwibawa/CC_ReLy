@@ -1,0 +1,16 @@
+# Smoke test against backend/local_server.py (in-memory, same handler code) - NOT the AWS deployment
+ReLy API smoke test  (2026-11-26 02:48:02 +07)
+check                                        expected  actual  result
+Health check            GET /                     200     200  PASS
+Create                  POST /signals             201     201  PASS
+Duplicate create -> 409 POST /signals             409     409  PASS
+List                    GET /signals              200     200  PASS
+Read one                GET /signals/{id}         200     200  PASS
+Update                  PUT /signals/{id}         200     200  PASS
+Simulator blocked on MANUAL -> 409                409     409  PASS
+Invalid payload -> 400  POST /signals             400     400  PASS
+Missing record -> 404   GET /signals/{id}         404     404  PASS
+Delete                  DELETE /signals/{id}      200     200  PASS
+Deleted is gone -> 404  GET /signals/{id}         404     404  PASS
+
+11/11 checks passed

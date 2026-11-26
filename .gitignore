@@ -1,0 +1,39 @@
+# --- Frontend (Vite / Figma Make) ---
+node_modules/
+dist/
+*.tsbuildinfo
+
+# --- Secrets & local configuration (NEVER commit) ---
+.env
+.env.*
+!.env.example
+**/config.local.*
+*.pem
+*.key
+credentials
+.aws/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# --- Build artifacts ---
+build/
+*.zip
+
+# --- Deployment outputs (contain live endpoint URLs) ---
+infrastructure/outputs*.json
+infrastructure/.deploy/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Local transfer files ---
+*.bundle

@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980" font-family="Inter, DejaVu Sans, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f2937"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+    <style>
+      .t  { font-size: 15px; font-weight: 700; fill: #111827; }
+      .s  { font-size: 12px; fill: #374151; }
+      .xs { font-size: 11px; fill: #4b5563; }
+      .lbl{ font-size: 12px; font-weight: 600; fill: #111827; }
+      .num{ font-size: 12px; font-weight: 700; fill: #ffffff; }
+      .box{ fill: #ffffff; stroke: #d1d5db; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="980" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="30" y="44" font-size="26" font-weight="800" fill="#0f172a">ReLy — Week 12 Architecture (Track C · Serverless)</text>
+  <text x="30" y="70" font-size="14" fill="#475569">Real-Time Traffic Signal Insight · AWS Academy Sandbox, region us-east-1 · ALL TRAFFIC DATA IS SIMULATED</text>
+
+  <!-- ============ CLIENTS (outside AWS) ============ -->
+  <rect x="20" y="100" width="360" height="610" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="36" y="126" class="lbl" fill="#3730a3">CLIENTS — outside AWS (public internet)</text>
+
+  <rect x="40" y="145" width="320" height="105" rx="10" class="box"/>
+  <rect x="40" y="145" width="6" height="105" fill="#6366f1"/>
+  <text x="58" y="171" class="t">ReLy Mobile Web App (PWA)</text>
+  <text x="58" y="192" class="s">Driver's phone · Trip · Drive · Signals</text>
+  <text x="58" y="210" class="s">Polls every 15 s, counts down locally</text>
+  <text x="58" y="228" class="s">RED + HEAVY ahead → detour suggestion</text>
+
+  <rect x="40" y="280" width="320" height="95" rx="10" class="box"/>
+  <rect x="40" y="280" width="6" height="95" fill="#6366f1"/>
+  <text x="58" y="306" class="t">Admin screen (operator)</text>
+  <text x="58" y="327" class="s">Manual CRUD of signal records</text>
+  <text x="58" y="345" class="s">Writes data_source = MANUAL (override)</text>
+
+  <rect x="40" y="405" width="320" height="110" rx="10" class="box"/>
+  <rect x="40" y="405" width="6" height="110" fill="#0ea5e9"/>
+  <text x="58" y="431" class="t">Python Simulator (local PC)</text>
+  <text x="58" y="452" class="s">5 Yogyakarta signals (Tugu → Kraton)</text>
+  <text x="58" y="470" class="s">PUT only on phase change</text>
+  <text x="58" y="488" class="s">?if_source=SIMULATOR → never overrides</text>
+  <text x="58" y="505" class="s">manual edits (409 → pause)</text>
+
+  <rect x="40" y="590" width="320" height="95" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="58" y="616" class="t">Google Maps (external)</text>
+  <text x="58" y="637" class="s">Opened via deep link with the detour</text>
+  <text x="58" y="655" class="s">waypoint · no API key · not part of AWS</text>
+  <path d="M40,232 L29,232 L29,637 L38,637" fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrG)"/>
+  <text x="18" y="425" class="xs" transform="rotate(-90 18 425)">deep link (route + detour)</text>
+
+  <!-- ============ INTERNET BAND ============ -->
+  <rect x="392" y="100" width="92" height="610" rx="10" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="430" y="600" class="lbl" text-anchor="middle" transform="rotate(-90 430 600)">Public Internet</text><text x="452" y="600" class="xs" text-anchor="middle" transform="rotate(-90 452 600)">HTTPS (TLS) · JSON</text>
+
+  <!-- ============ AWS CLOUD ============ -->
+  <rect x="500" y="100" width="980" height="860" rx="14" fill="#fffbf5" stroke="#ff9900" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="518" y="128" class="lbl" fill="#c2410c">AWS CLOUD — us-east-1 (AWS Academy Sandbox account · no VPC needed: all services are AWS-managed regional endpoints)</text>
+
+  <!-- Function URL -->
+  <rect x="525" y="250" width="250" height="150" rx="10" class="box"/>
+  <rect x="525" y="250" width="250" height="6" fill="#ff9900"/>
+  <text x="541" y="282" class="t">Lambda Function URL</text>
+  <text x="541" y="303" class="s">Public HTTPS endpoint (only entry)</text>
+  <text x="541" y="321" class="s">AuthType NONE (prototype)</text>
+  <text x="541" y="339" class="s">CORS: GET/POST/PUT/DELETE</text>
+  <text x="541" y="361" class="xs">Replaces Amazon API Gateway,</text>
+  <text x="541" y="377" class="xs">which the sandbox does not permit</text>
+
+  <!-- Lambda -->
+  <rect x="830" y="250" width="280" height="150" rx="10" class="box"/>
+  <rect x="830" y="250" width="280" height="6" fill="#ff9900"/>
+  <text x="846" y="282" class="t">AWS Lambda</text>
+  <text x="846" y="303" class="s">Function: ReLy-SignalHandler</text>
+  <text x="846" y="321" class="s">Python 3.12 · 128 MB · 10 s timeout</text>
+  <text x="846" y="339" class="s">5 routes (4 CRUD ops) · validation</text>
+  <text x="846" y="357" class="s">phase_ends_at → remaining_seconds</text>
+  <text x="846" y="377" class="xs">Invocable only via its URL</text>
+
+  <!-- DynamoDB -->
+  <rect x="1170" y="250" width="285" height="150" rx="10" class="box"/>
+  <rect x="1170" y="250" width="285" height="6" fill="#2563eb"/>
+  <text x="1186" y="282" class="t">Amazon DynamoDB</text>
+  <text x="1186" y="303" class="s">Table: ReLy-TrafficSignals</text>
+  <text x="1186" y="321" class="s">Partition key: signal_id (String)</text>
+  <text x="1186" y="339" class="s">On-demand capacity (no idle cost)</text>
+  <text x="1186" y="357" class="s">Conditional writes (no duplicates,</text>
+  <text x="1186" y="375" class="s">no simulator-over-manual overwrite)</text>
+
+  <!-- IAM -->
+  <rect x="830" y="470" width="280" height="140" rx="10" class="box"/>
+  <rect x="830" y="470" width="280" height="6" fill="#dc2626"/>
+  <text x="846" y="502" class="t">IAM — LabRole (execution role)</text>
+  <text x="846" y="523" class="s">Assumed by Lambda &amp; CloudFormation</text>
+  <text x="846" y="541" class="s">Grants DynamoDB + CloudWatch Logs</text>
+  <text x="846" y="559" class="s">Clients never receive AWS credentials</text>
+  <text x="846" y="583" class="xs">Sandbox forbids custom roles → LabRole is</text>
+  <text x="846" y="598" class="xs">broader than least privilege (documented)</text>
+
+  <!-- CloudWatch -->
+  <rect x="1170" y="470" width="285" height="140" rx="10" class="box"/>
+  <rect x="1170" y="470" width="285" height="6" fill="#16a34a"/>
+  <text x="1186" y="502" class="t">Amazon CloudWatch Logs</text>
+  <text x="1186" y="523" class="s">/aws/lambda/ReLy-SignalHandler</text>
+  <text x="1186" y="541" class="s">JSON log per request: method, path,</text>
+  <text x="1186" y="559" class="s">status, duration, request id</text>
+  <text x="1186" y="583" class="xs">Retention 7 days</text>
+
+  <!-- ===== Request flows ===== -->
+  <!-- 1 app -->
+  <path d="M360,197 C 450,197 450,290 523,290" fill="none" stroke="#1f2937" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 2 admin -->
+  <path d="M360,327 C 450,327 450,325 523,325" fill="none" stroke="#1f2937" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 3 simulator -->
+  <path d="M360,460 C 450,460 450,360 523,360" fill="none" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 4 url -> lambda -->
+  <path d="M775,325 L828,325" fill="none" stroke="#1f2937" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 5 lambda -> dynamo -->
+  <path d="M1110,310 L1168,310" fill="none" stroke="#1f2937" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M1168,345 L1112,345" fill="none" stroke="#1f2937" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- 6 lambda -> logs -->
+  <path d="M1080,400 C 1080,440 1200,430 1240,468" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- IAM assume -->
+  <path d="M940,468 L940,402" fill="none" stroke="#b91c1c" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrR)"/>
+  <text x="948" y="440" class="xs" fill="#b91c1c">role assumed</text>
+  <!-- 7 response -->
+  <path d="M600,250 C 600,200 300,175 362,180" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrG)"/>
+
+  <!-- number badges -->
+  <g>
+    <circle cx="455" cy="232" r="11" fill="#1f2937"/><text x="455" y="236" class="num" text-anchor="middle">1</text>
+    <circle cx="455" cy="326" r="11" fill="#1f2937"/><text x="455" y="330" class="num" text-anchor="middle">2</text>
+    <circle cx="455" cy="420" r="11" fill="#0ea5e9"/><text x="455" y="424" class="num" text-anchor="middle">3</text>
+    <circle cx="802" cy="306" r="11" fill="#1f2937"/><text x="802" y="310" class="num" text-anchor="middle">4</text>
+    <circle cx="1139" cy="293" r="11" fill="#1f2937"/><text x="1139" y="297" class="num" text-anchor="middle">5</text>
+    <circle cx="1150" cy="432" r="11" fill="#16a34a"/><text x="1150" y="436" class="num" text-anchor="middle">6</text>
+    <circle cx="560" cy="205" r="11" fill="#6b7280"/><text x="560" y="209" class="num" text-anchor="middle">7</text>
+  </g>
+
+  <!-- Flow legend -->
+  <rect x="525" y="630" width="930" height="100" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="541" y="652" class="lbl">Request / data flow</text>
+  <text x="541" y="671" class="xs" xml:space="preserve">1  App: GET /signals every 15 s          2  Admin: POST /signals · PUT /signals/{id} · DELETE /signals/{id}</text>
+  <text x="541" y="688" class="xs" xml:space="preserve">3  Simulator: GET /signals/{id} → POST only if 404, then PUT /signals/{id}?if_source=SIMULATOR on each phase change</text>
+  <text x="541" y="705" class="xs" xml:space="preserve">4  Function URL invokes Lambda (event payload 2.0)          5  Lambda ↔ DynamoDB: Scan · GetItem · PutItem · UpdateItem · DeleteItem (conditional)</text>
+  <text x="541" y="722" class="xs" xml:space="preserve">6  Lambda writes JSON logs to CloudWatch          7  JSON response to the client (remaining_seconds computed at read time)</text>
+
+  <!-- ===== Deployment lane ===== -->
+  <rect x="525" y="745" width="930" height="200" rx="10" fill="#f5f5f4" stroke="#a8a29e" stroke-dasharray="6 4"/>
+  <text x="541" y="768" class="lbl" fill="#57534e">DEPLOYMENT PATH (developer only · infrastructure as code)</text>
+
+  <rect x="545" y="780" width="200" height="130" rx="10" class="box"/>
+  <text x="561" y="808" class="t">AWS CloudShell</text>
+  <text x="561" y="829" class="s">git clone repo</text>
+  <text x="561" y="847" class="s">bash infrastructure/</text>
+  <text x="561" y="865" class="s">     deploy.sh</text>
+  <text x="561" y="890" class="xs">Console-federated credentials</text>
+
+  <rect x="790" y="780" width="230" height="130" rx="10" class="box"/>
+  <rect x="790" y="780" width="6" height="130" fill="#7c3aed"/>
+  <text x="808" y="808" class="t">Amazon S3 (private)</text>
+  <text x="808" y="829" class="s">rely-artifacts-&lt;acct&gt;-&lt;region&gt;</text>
+  <text x="808" y="847" class="s">Lambda code package (.zip)</text>
+  <text x="808" y="865" class="s">Block Public Access: ON</text>
+
+  <rect x="1065" y="780" width="370" height="130" rx="10" class="box"/>
+  <rect x="1065" y="780" width="6" height="130" fill="#db2777"/>
+  <text x="1083" y="808" class="t">AWS CloudFormation — stack rely-stack</text>
+  <text x="1083" y="829" class="s">infrastructure/template.yaml, executed as LabRole</text>
+  <text x="1083" y="847" class="s">Creates: DynamoDB table, Lambda, Function URL,</text>
+  <text x="1083" y="865" class="s">invoke permissions, log group</text>
+  <text x="1083" y="890" class="xs">Sandbox wipes resources per session → one-command redeploy</text>
+
+  <path d="M745,845 L788,845" fill="none" stroke="#57534e" stroke-width="2" marker-end="url(#arrG)"/>
+  <path d="M1020,845 L1063,845" fill="none" stroke="#57534e" stroke-width="2" marker-end="url(#arrG)"/>
+  <path d="M1466,790 L1466,258" fill="none" stroke="#57534e" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrG)"/>
+  <text x="1474" y="520" class="xs" fill="#57534e" text-anchor="middle" transform="rotate(90 1474 520)">CloudFormation provisions these resources</text>
+
+  <!-- ===== Security / network notes ===== -->
+  <rect x="20" y="730" width="464" height="230" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="36" y="756" class="lbl">IAM / security &amp; network considerations</text>
+  <text x="36" y="780" class="xs">• Single public entry point: the Function URL over HTTPS (TLS).</text>
+  <text x="36" y="799" class="xs">• No VPC: Lambda, DynamoDB, S3, CloudWatch are managed regional</text>
+  <text x="36" y="815" class="xs">   services; no servers, subnets or open ports to manage.</text>
+  <text x="36" y="834" class="xs">• Data access only through Lambda's role (LabRole); clients hold no</text>
+  <text x="36" y="850" class="xs">   AWS keys. Your console user cannot write to the table directly.</text>
+  <text x="36" y="869" class="xs">• Validation + atomic conditional writes protect data integrity.</text>
+  <text x="36" y="888" class="xs">• Code bucket is private; secrets/URLs kept in gitignored .env.</text>
+  <text x="36" y="907" class="xs">• Prototype gaps (future): no end-user auth (Cognito), no per-client</text>
+  <text x="36" y="923" class="xs">   rate limiting (API Gateway usage plans), LabRole broader than</text>
+  <text x="36" y="939" class="xs">   least privilege due to sandbox limits.</text>
+</svg>

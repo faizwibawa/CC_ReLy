@@ -1,0 +1,113 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  ReLy - Real-Time Traffic Signal Insight (Week 12, Track C Serverless).
+  DynamoDB table + Lambda (LabRole) + Lambda Function URL. All data is simulated.
+
+Parameters:
+  LabRoleArn:
+    Type: String
+    Description: ARN of the pre-created AWS Academy role "LabRole" (Lambda execution role).
+  CodeBucket:
+    Type: String
+    Description: S3 bucket holding the packaged Lambda code (created by deploy.sh).
+  CodeKey:
+    Type: String
+    Description: S3 key of the Lambda deployment package (zip).
+  TableName:
+    Type: String
+    Default: ReLy-TrafficSignals
+  AllowedOrigin:
+    Type: String
+    Default: '*'
+    Description: >-
+      Browser origin allowed by CORS (e.g. https://rely-dashboard-xyz.s3-website-us-east-1.amazonaws.com).
+      '*' is acceptable for the prototype; restrict it once the dashboard URL is known.
+
+Resources:
+  SignalsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    Properties:
+      TableName: !Ref TableName
+      BillingMode: PAY_PER_REQUEST          # on-demand: no idle cost, no capacity planning
+      AttributeDefinitions:
+        - AttributeName: signal_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: signal_id
+          KeyType: HASH
+      Tags:
+        - Key: project
+          Value: ReLy
+
+  SignalHandlerLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: /aws/lambda/ReLy-SignalHandler
+      RetentionInDays: 7
+
+  SignalHandler:
+    Type: AWS::Lambda::Function
+    DependsOn: SignalHandlerLogGroup
+    Properties:
+      FunctionName: ReLy-SignalHandler
+      Description: ReLy REST API - CRUD for TrafficSignal records
+      Runtime: python3.12
+      Handler: handler.lambda_handler
+      Role: !Ref LabRoleArn                 # Academy sandbox: custom roles cannot be created
+      MemorySize: 128
+      Timeout: 10
+      Code:
+        S3Bucket: !Ref CodeBucket
+        S3Key: !Ref CodeKey
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SignalsTable
+      Tags:
+        - Key: project
+          Value: ReLy
+
+  # Replaces Amazon API Gateway, which is not permitted in the AWS Academy sandbox.
+  SignalHandlerUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !GetAtt SignalHandler.Arn
+      AuthType: NONE
+      Cors:
+        AllowOrigins:
+          - !Ref AllowedOrigin
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+        AllowHeaders:
+          - content-type
+        MaxAge: 300
+
+  # Public Function URLs need both permissions below.
+  UrlInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref SignalHandler
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
+      FunctionUrlAuthType: NONE
+
+  FunctionInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref SignalHandler
+      Action: lambda:InvokeFunction
+      Principal: '*'
+      InvokedViaFunctionUrl: true          # only invocable through the Function URL
+
+Outputs:
+  ApiUrl:
+    Description: Base URL of the ReLy API (put this in .env as RELY_API_URL, without trailing slash)
+    Value: !GetAtt SignalHandlerUrl.FunctionUrl
+  TableName:
+    Value: !Ref SignalsTable
+  FunctionName:
+    Value: !Ref SignalHandler

@@ -1,0 +1,24 @@
+test_crud_round_trip (test_dynamo_repository.DynamoRepositoryTests.test_crud_round_trip) ... ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 1.271s
+
+OK

@@ -1,0 +1,66 @@
+{
+  "_note": "SIMULATED demo data for the ReLy prototype. Coordinates are approximate and phase timings are invented; this is not real traffic-signal data. Signals are ordered along the demo route Tugu -> Kraton (Yogyakarta).",
+  "demo_route": {
+    "name": "Tugu → Kraton (demo)",
+    "origin": { "label": "Tugu Jogja", "lat": -7.7829, "lng": 110.3671 },
+    "destination": { "label": "Alun-Alun Utara (Kraton)", "lat": -7.8045, "lng": 110.3643 },
+    "signal_order": ["YK-TUGU-01", "YK-PSKM-02", "YK-NOLKM-03", "YK-GDMN-04", "YK-NGBN-05"]
+  },
+  "signals": [
+    {
+      "signal": {
+        "signal_id": "YK-TUGU-01",
+        "location": "Simpang Tugu Jogja",
+        "latitude": -7.7829,
+        "longitude": 110.3671,
+        "detour": null
+      },
+      "cycle": { "GREEN": 35, "YELLOW": 4, "RED": 40 },
+      "congestion_weights": { "FREE": 3, "MODERATE": 5, "HEAVY": 2 }
+    },
+    {
+      "signal": {
+        "signal_id": "YK-PSKM-02",
+        "location": "Simpang Malioboro – Pasar Kembang (approx.)",
+        "latitude": -7.7905,
+        "longitude": 110.3660,
+        "detour": { "label": "Turn right via Jl. Pasar Kembang (simulated suggestion)", "lat": -7.7898, "lng": 110.3627 }
+      },
+      "cycle": { "GREEN": 30, "YELLOW": 4, "RED": 35 },
+      "congestion_weights": { "FREE": 2, "MODERATE": 4, "HEAVY": 4 }
+    },
+    {
+      "signal": {
+        "signal_id": "YK-NOLKM-03",
+        "location": "Simpang Titik Nol Kilometer",
+        "latitude": -7.8013,
+        "longitude": 110.3648,
+        "detour": { "label": "Turn right via Jl. KH Ahmad Dahlan toward Ngabean (simulated suggestion)", "lat": -7.8017, "lng": 110.3605 }
+      },
+      "cycle": { "GREEN": 30, "YELLOW": 4, "RED": 45 },
+      "congestion_weights": { "FREE": 1, "MODERATE": 3, "HEAVY": 6 }
+    },
+    {
+      "signal": {
+        "signal_id": "YK-GDMN-04",
+        "location": "Simpang Gondomanan",
+        "latitude": -7.8011,
+        "longitude": 110.3693,
+        "detour": { "label": "Continue via Jl. Brigjen Katamso (simulated suggestion)", "lat": -7.8060, "lng": 110.3700 }
+      },
+      "cycle": { "GREEN": 25, "YELLOW": 3, "RED": 30 },
+      "congestion_weights": { "FREE": 4, "MODERATE": 4, "HEAVY": 2 }
+    },
+    {
+      "signal": {
+        "signal_id": "YK-NGBN-05",
+        "location": "Simpang Ngabean",
+        "latitude": -7.8031,
+        "longitude": 110.3578,
+        "detour": null
+      },
+      "cycle": { "GREEN": 30, "YELLOW": 4, "RED": 30 },
+      "congestion_weights": { "FREE": 5, "MODERATE": 3, "HEAVY": 2 }
+    }
+  ]
+}

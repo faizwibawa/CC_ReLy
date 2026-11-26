@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { color-scheme: light; }
+  :root.dark { color-scheme: dark; }
+  * { @apply border-slate-200 dark:border-slate-800; }
+  body {
+    @apply m-0 min-w-[320px] bg-slate-200 font-sans text-slate-900 antialiased transition-colors dark:bg-[#030812] dark:text-slate-100;
+  }
+  button, input, select { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950; }
+  button { -webkit-tap-highlight-color: transparent; }
+}
+
+@layer components {
+  .mobile-card { @apply rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-[#101d2d]; }
+  .mobile-field { @apply h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm text-slate-900 placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100; }
+  .primary-action { @apply flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-5 text-base font-bold text-slate-950 shadow-lg shadow-cyan-500/10 transition active:scale-[.98]; }
+  .secondary-action { @apply flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 transition active:scale-[.98] dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200; }
+  .touch { @apply min-h-12; }
+  .info-box { @apply flex min-h-24 flex-col items-start justify-between rounded-2xl bg-slate-100 p-3 dark:bg-slate-900; }
+  .info-box > span:first-child { @apply text-[10px] font-semibold uppercase tracking-wider text-slate-500; }
+}
